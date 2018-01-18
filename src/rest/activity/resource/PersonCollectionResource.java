@@ -1,12 +1,6 @@
 package rest.activity.resource;
 
-import rest.activity.dao.ActivityDao;
 import rest.activity.model.Person;
-import rest.activity.model.PersonType;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.*;
@@ -15,9 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceUnit;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,11 +34,11 @@ public class PersonCollectionResource {
     Request request;
 
     // will work only inside a Java EE application
-    @PersistenceUnit(unitName="introsde-jpa")
+    @PersistenceUnit(unitName="assignment2-server")
     EntityManager entityManager;
 
     // will work only inside a Java EE application
-    @PersistenceContext(unitName = "introsde-jpa",type=PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "assignment2-server",type=PersistenceContextType.TRANSACTION)
     private EntityManagerFactory entityManagerFactory;
 
     // Return the list of people to the user in the browser
@@ -58,7 +50,7 @@ public class PersonCollectionResource {
         return people;
     }
 
-    // retuns the number of people
+    // returns the number of people
     // to get the total number of records
     @GET
     @Path("count")
@@ -71,8 +63,8 @@ public class PersonCollectionResource {
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_XML)
-    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Person newPerson(Person person) throws IOException {
         System.out.println("Creating new person...");            
         return Person.savePerson(person);

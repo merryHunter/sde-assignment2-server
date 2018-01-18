@@ -1,6 +1,10 @@
 package rest.activity.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -59,7 +63,7 @@ public class Activity implements Serializable {
 	
 //	@Temporal(TemporalType.DATE)
 	@Column(name="startdate")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private String startdate;
 	
 	@ManyToOne
@@ -69,9 +73,36 @@ public class Activity implements Serializable {
 	public Activity() {
 	}
 	
-	
-	public Activity(String name, String description, String place, String activityType, String startdate) {
+	/**
+	 * 
+	 * @param activityType must be one of values from ActivityTypes array
+	 * @param startdate start date in format dd-MM-yyyy
+	 * @throws IllegalArgumentException
+	 */
+	public Activity(String name, 
+			String description,
+			String place, 
+			String activityType, 
+			String startdate) throws Exception {
 		super();
+		// validate activity type parameter 
+		if ( !Arrays.asList(Activity.ActivityTypes).contains(activityType) )
+			throw new IllegalArgumentException("Activity type " 
+					+ activityType + " is not supported!\nList of available types:"
+					+ ActivityTypes.toString());
+		
+		// validate startdate parameter
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		
+	    //To make strict date format validation
+	    formatter.setLenient(false);
+	    Date parsedDate = null;
+	    try {
+	        parsedDate = formatter.parse(startdate);
+	    } catch (ParseException e) {
+	    	throw new IllegalArgumentException("Start date does not match to format dd-MM-yyyy!");
+	    }
+	    
 		this.name = name;
 		this.description = description;
 		this.place = place;
@@ -144,10 +175,11 @@ public class Activity implements Serializable {
 		return p;
 	}
 	
-	//@XmlElementWrapper(name = "preferences")
+
 	public static List<Activity> getAll() {
 		EntityManager em = ActivityDao.instance.createEntityManager();
-	    List<Activity> list = em.createNamedQuery("Activity.findAll", Activity.class).getResultList();
+	    List<Activity> list = em.createNamedQuery("Activity.findAll", Activity.class)
+	    												.getResultList();
 	    ActivityDao.instance.closeConnections(em);
 	    return list;
 	}
