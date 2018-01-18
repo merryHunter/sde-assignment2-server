@@ -5,10 +5,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import rest.activity.model.ActivityPreference;
-import rest.activity.model.Person;
-import rest.activity.model.PersonType;
-
 public enum ActivityDao {
 	instance;
 	private EntityManagerFactory emf;

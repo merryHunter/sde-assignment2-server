@@ -3,6 +3,7 @@
 	<persistence-unit name="assignment2-server">
 	
 	<class>rest.activity.model.Person</class>
+	<class>rest.activity.model.Activity</class>
 	
 	 <properties>
 	<!-- the jdbc driver we will use to connect to the database 
@@ -10,7 +11,7 @@
             <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
             <!-- the last part of the url is the path to the sqlite file of the db, in this case it should be
                  on the root folder of the project -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:lifecoach.sqlite" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:activity.sqlite" />
             <!-- set it to ALL to see all the JPA related debugging information --> 
             <property name="eclipselink.logging.level" value="INFO" />
             <!-- we will use this to automatically add elements to our database if we modify the Java model -->
