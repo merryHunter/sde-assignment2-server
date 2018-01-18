@@ -4,22 +4,26 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import rest.activity.dao.ActivityDao;
+import rest.util.ActivityUtil;
 
 /**
  * The persistent class for the "Person" database table.
  * 
  */
 @Entity  // indicates that this class is an entity to persist in DB
-@Table(name="Person") // to what table must be persisted
+@Table(name="\"Person\"") // to what table must be persisted
 @NamedQuery(name="Person.findAll", query="SELECT p FROM Person p")
+@XmlRootElement(name="person")
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id // defines this attributed as the one that identifies the entity
-    @GeneratedValue(strategy=GenerationType.AUTO) 
-    @Column(name="personId") // maps the following attribute to a column
+    @GeneratedValue //(strategy=GenerationType.AUTO) 
+//    @Column(name="personId") // maps the following attribute to a column
     private int personId;
     
     @Column(name="lastname")
@@ -28,9 +32,6 @@ public class Person implements Serializable {
     @Column(name="firstname")
     private String firstname;
     
-    @Column(name="username")
-    private String username;
-    
     @Column(name="birthdate")
     private String birthdate; 
     
@@ -38,6 +39,26 @@ public class Person implements Serializable {
 	@XmlElementWrapper(name="preferences")
     private List<Activity> activitypreference;
    
+    public Person() {}
+    
+    /**
+     * 
+     * @param birthdate Must be in format yyyy-MM-dd
+     * @param activitypreferences
+     */
+    public Person(String firstname, 
+    		String lastname, 
+    		String birthdate,
+    		List<Activity> activitypreferences) throws IllegalArgumentException{
+		super();
+		
+		// validate birthdate param
+		birthdate = ActivityUtil.validateDateString(birthdate);
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.birthdate = birthdate;
+		this.activitypreference = activitypreferences;
+    }
     
     // queries
     public List<Activity> getActivitiesWithType(String activityType) 
@@ -111,22 +132,14 @@ public class Person implements Serializable {
 		this.lastname = lastname;
 	}
 
-	public String getName() {
+	public String getFirstname() {
 		return firstname;
 	}
 
-	public void setName(String name) {
-		this.firstname = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
+	
 	public String getBirthdate() {
 		return birthdate;
 	}

@@ -1,7 +1,11 @@
 package rest.activity.test;
 
 import static org.junit.Assert.*;
+
+import rest.activity.model.Activity;
 import rest.activity.model.Person;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -34,16 +38,33 @@ public class PersonTest {
         int personOriginalCount = list.size();
 
         Person p = new Person();
-        p.setName("Pinco");
+        p.setFirstname("Pinco");
         p.setLastname("Pallino");
         Calendar c = Calendar.getInstance();
         c.set(1984, 6, 21);
-        p.setBirthdate(c.getTime().toString());
-
-        System.out.println("--> TEST: addPersonWithDao ==> persisting person");
+        p.setBirthdate("1994-01-01");
+        List<Activity> activities = new ArrayList<Activity>();
+		// create activities
+		try {
+			activities.add(new Activity("Snowboarding", "Snowboarding in Alpines",
+					"Dolimities, Italy", "Sport", "2017-01-01"));
+			
+			activities.add(new Activity("Skiing", "Skiing in Carpathian mountains",
+					"Carpathy, Ukraine", "Sport", "2017-02-01"));
+		}
+		catch (IllegalArgumentException e){
+			
+		}
+//		p.setActivityPreferences(activities);
+		Person p1 = new Person("Ivan", "Chernukha", "1995-07-03", activities);
+		activities.get(0).setPerson(p1);
+		activities.get(1).setPerson(p1);
+		
+		System.out.println("--> TEST: addPersonWithDao ==> persisting person");
+        Person.savePerson(p1);
+        assertNotNull("Id should not be null", p1.getPersonId());
         Person.savePerson(p);
         assertNotNull("Id should not be null", p.getPersonId());
-
         System.out.println("--> TEST: addPersonWithDao ==> getting the list");
         list = Person.getAll();
         assertEquals("Table has two entities", personOriginalCount+1, list.size());
@@ -51,9 +72,9 @@ public class PersonTest {
         Person newPerson = Person.getPersonById(p.getPersonId());
 
         System.out.println("--> TEST: addPersonWithDao ==> removing new person");
-        Person.removePerson(newPerson);
+//        Person.removePerson(newPerson);
         list = Person.getAll();
-        assertEquals("Table has two entities", personOriginalCount, list.size());
+//        assertEquals("Table has two entities", personOriginalCount, list.size());
     }
 
     @BeforeClass

@@ -1,10 +1,7 @@
 package rest.activity.model;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -23,19 +20,21 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import rest.activity.dao.ActivityDao;
+import rest.util.ActivityUtil;
 
 /**
  * The persistent class for the "Activity" database table.
  * 
  */
 @Entity
-@Table(name = "Activity")
+@Table(name = "\"Activity\"")
 @NamedQuery(name = "Activity.findAll", query = "SELECT a FROM Activity a")
 @XmlRootElement(name="activity")
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// supported predefined activity types
+	@XmlTransient
 	public static final String[] ActivityTypes = {
            "Sport",
            "Social",
@@ -66,17 +65,16 @@ public class Activity implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private String startdate;
 	
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name="personId",referencedColumnName="personId")
 	private Person person;
 
-	public Activity() {
-	}
+	public Activity() {}
 	
 	/**
 	 * 
 	 * @param activityType must be one of values from ActivityTypes array
-	 * @param startdate start date in format dd-MM-yyyy
+	 * @param startdate start date in format yyyy-MM-dd
 	 * @throws IllegalArgumentException
 	 */
 	public Activity(String name, 
@@ -92,16 +90,7 @@ public class Activity implements Serializable {
 					+ ActivityTypes.toString());
 		
 		// validate startdate parameter
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		
-	    //To make strict date format validation
-	    formatter.setLenient(false);
-	    Date parsedDate = null;
-	    try {
-	        parsedDate = formatter.parse(startdate);
-	    } catch (ParseException e) {
-	    	throw new IllegalArgumentException("Start date does not match to format dd-MM-yyyy!");
-	    }
+		startdate = ActivityUtil.validateDateString(startdate);
 	    
 		this.name = name;
 		this.description = description;
