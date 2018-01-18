@@ -83,7 +83,7 @@ public class Activity implements Serializable {
 			String description,
 			String place, 
 			String activityType, 
-			String startdate) throws Exception {
+			String startdate) throws IllegalArgumentException {
 		super();
 		// validate activity type parameter 
 		if ( !Arrays.asList(Activity.ActivityTypes).contains(activityType) )
