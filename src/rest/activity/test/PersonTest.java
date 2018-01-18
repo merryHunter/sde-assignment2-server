@@ -62,14 +62,14 @@ public class PersonTest {
 		
 		System.out.println("--> TEST: addPersonWithDao ==> persisting person");
         Person.savePerson(p1);
-        assertNotNull("Id should not be null", p1.getPersonId());
+        assertNotNull("Id should not be null", p1.getIdPerson());
         Person.savePerson(p);
-        assertNotNull("Id should not be null", p.getPersonId());
+        assertNotNull("Id should not be null", p.getIdPerson());
         System.out.println("--> TEST: addPersonWithDao ==> getting the list");
         list = Person.getAll();
         assertEquals("Table has two entities", personOriginalCount+1, list.size());
 
-        Person newPerson = Person.getPersonById(p.getPersonId());
+        Person newPerson = Person.getPersonById(p.getIdPerson());
 
         System.out.println("--> TEST: addPersonWithDao ==> removing new person");
 //        Person.removePerson(newPerson);

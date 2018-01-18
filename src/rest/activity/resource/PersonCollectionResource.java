@@ -34,11 +34,11 @@ public class PersonCollectionResource {
     Request request;
 
     // will work only inside a Java EE application
-    @PersistenceUnit(unitName="assignment2-server")
+    @PersistenceUnit(unitName="assignment2-server-unit")
     EntityManager entityManager;
 
     // will work only inside a Java EE application
-    @PersistenceContext(unitName = "assignment2-server",type=PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "assignment2-server-unit",type=PersistenceContextType.TRANSACTION)
     private EntityManagerFactory entityManagerFactory;
 
     // Return the list of people to the user in the browser

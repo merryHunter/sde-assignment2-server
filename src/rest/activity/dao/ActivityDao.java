@@ -13,7 +13,7 @@ public enum ActivityDao {
         if (emf!=null) {
             emf.close();
         }
-        emf = Persistence.createEntityManagerFactory("assignment2-server");
+        emf = Persistence.createEntityManagerFactory("assignment2-server-unit");
     }
 
     public EntityManager createEntityManager() {

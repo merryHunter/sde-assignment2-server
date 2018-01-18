@@ -2,6 +2,7 @@ package rest.activity.model;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,8 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -27,26 +32,25 @@ import rest.util.ActivityUtil;
  * 
  */
 @Entity
-@Table(name = "\"Activity\"")
+@Table(name = "Activity")
 @NamedQuery(name = "Activity.findAll", query = "SELECT a FROM Activity a")
 @XmlRootElement(name="activity")
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	// supported predefined activity types
 	@XmlTransient
 	public static final String[] ActivityTypes = {
-           "Sport",
-           "Social",
-           "University",
-           "Extreme",
-           "City",                                            
+		"Sport",
+		"Social",
+		"University",
+		"City",
+		"Extreme"
 	};
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "activityId")
-	private int activityId;
+	@Column(name = "idActivity")
+	private int idActivity;
 
 	@Column(name = "name")
 	private String name;
@@ -60,52 +64,52 @@ public class Activity implements Serializable {
 	@Column(name = "type")
 	private String type;
 	
-//	@Temporal(TemporalType.DATE)
 	@Column(name="startdate")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private String startdate;
 	
-	@ManyToOne()
-	@JoinColumn(name="personId",referencedColumnName="personId")
+	@ManyToOne
+	@JoinColumn(name="idPerson",referencedColumnName="idPerson")
 	private Person person;
 
-	public Activity() {}
+	public Activity() {
+	}
 	
 	/**
 	 * 
-	 * @param activityType must be one of values from ActivityTypes array
-	 * @param startdate start date in format yyyy-MM-dd
-	 * @throws IllegalArgumentException
+	 * @param type One of values in array ActivityTypes
+	 * @param startdate String representing a date in format yyyy-MM-dd
+	 * @throws IllegalArgumentException if parameters above are not valid
 	 */
 	public Activity(String name, 
 			String description,
 			String place, 
-			String activityType, 
+			String type, 
 			String startdate) throws IllegalArgumentException {
 		super();
-		// validate activity type parameter 
-		if ( !Arrays.asList(Activity.ActivityTypes).contains(activityType) )
-			throw new IllegalArgumentException("Activity type " 
-					+ activityType + " is not supported!\nList of available types:"
-					+ ActivityTypes.toString());
 		
-		// validate startdate parameter
-		startdate = ActivityUtil.validateDateString(startdate);
-	    
+		if ( !Arrays.asList(Activity.ActivityTypes).contains(type)) {
+			throw new IllegalArgumentException("The activity type "
+					+ type + " is not supported!\nAvailable: "
+					+ Activity.ActivityTypes.toString());
+		}
+		
+		this.startdate = ActivityUtil.validateDateString(startdate);
+		
 		this.name = name;
 		this.description = description;
 		this.place = place;
-		this.type = activityType;
-		this.startdate = startdate;
+		this.type = type;
+		
 	}
 
 
-	public int getActivityId() {
-		return activityId;
+	public int getIdActivity() {
+		return idActivity;
 	}
 
-	public void setActivityId(int idActivity) {
-		this.activityId = idActivity;
+	public void setIdActivity(int idActivity) {
+		this.idActivity = idActivity;
 	}
 
 	public String getName() {
@@ -132,7 +136,7 @@ public class Activity implements Serializable {
 		this.place = place;
 	}
 
-	public String getActivityType() {
+	public String getType() {
 		return type;
 	}
 
@@ -164,12 +168,10 @@ public class Activity implements Serializable {
 		return p;
 	}
 	
-
 	public static List<Activity> getAll() {
 		EntityManager em = ActivityDao.instance.createEntityManager();
-	    List<Activity> list = em.createNamedQuery("Activity.findAll", Activity.class)
-	    												.getResultList();
-	    ActivityDao.instance.closeConnections(em);
+	    List<Activity> list = em.createNamedQuery("Activity.findAll", Activity.class).getResultList();
+		ActivityDao.instance.closeConnections(em);
 	    return list;
 	}
 	
@@ -203,4 +205,3 @@ public class Activity implements Serializable {
 	    ActivityDao.instance.closeConnections(em);
 	}
 }
-

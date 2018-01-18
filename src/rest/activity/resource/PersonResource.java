@@ -57,7 +57,7 @@ public class PersonResource {
         Person person = this.getPersonById(id);
         if (person == null)
             throw new RuntimeException("Get: Person with " + id + " not found");
-        System.out.println("Returning person... " + person.getPersonId());
+        System.out.println("Returning person... " + person.getIdPerson());
         return person;
     }
 
@@ -74,7 +74,7 @@ public class PersonResource {
             res = Response.noContent().build();
         } else {
             res = Response.created(uriInfo.getAbsolutePath()).build();
-            person.setPersonId(this.id);
+            person.setIdPerson(this.id);
             Person.updatePerson(person);
         }
         return res;
