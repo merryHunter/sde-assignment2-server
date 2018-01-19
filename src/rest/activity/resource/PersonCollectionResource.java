@@ -28,6 +28,13 @@ import javax.ws.rs.core.UriInfo;
 @Path("/person")
 public class PersonCollectionResource {
 
+	/* 
+	 *  DATABASE_INIT
+	 *  Called only once at first request to this resource
+	 */
+	static {
+		DatabaseInitResource.getInitialPersonsList();
+	}
 	// Allows to insert contextual objects into the class,
     // e.g. ServletContext, Request, Response, UriInfo
     @Context

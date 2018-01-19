@@ -1,12 +1,5 @@
 package rest.activity.resource;
 
-
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-//import rest.activity.resource.DatabaseInit;
 import rest.activity.model.Activity;
 import rest.activity.model.Person;
 
@@ -35,10 +27,9 @@ public class DatabaseInitResource {
 	
 	// Request#0
 	
-	private List<Person> getFiveNewPeople() {
+	private static List<Person> getFiveNewPeople() {
 		List<Activity> activities = new ArrayList<Activity>();
 		List<Person> people = new ArrayList<Person>();
-		Person p;
 		try {
 			activities.add(new Activity("Snowboarding", "Snowboarding in Alpines",
 					"Dolimities, Italy", "Sport", "2017-01-01"));
@@ -101,30 +92,24 @@ public class DatabaseInitResource {
 	
 	
 	// Request #0
-		@GET
-		@Produces({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-		public List<Person> getInitialPersonsList() {
-			List<Person> newPeople = getFiveNewPeople();
-			List<Person> people = new ArrayList<Person>();
-			Person person;
-			for (int i =0; i < 5; i++) {
-				try {
-					System.out.println("before save person");
-					person = Person.savePerson(newPeople.get(i));
-					people.add(person);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
+	@GET
+	@Produces({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public static List<Person> getInitialPersonsList() {
+		List<Person> newPeople = getFiveNewPeople();
+		List<Person> people = new ArrayList<Person>();
+		Person person;
+		for (int i =0; i < 5; i++) {
+			try {
+				person = Person.savePerson(newPeople.get(i));
+				people.add(person);
 			}
-			
-			System.out.println("The database has been populated with records of "
-						+ Integer.toString(people.size())+ " people..");
-			return people;
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-	
-	
-	
-	
-	
+		
+		System.out.println("DATABASE INIT: The database has been populated with records of "
+					+ Integer.toString(people.size())+ " people..");
+		return people;
+	}
 }
