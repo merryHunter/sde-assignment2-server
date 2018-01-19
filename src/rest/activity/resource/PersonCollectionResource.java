@@ -3,6 +3,8 @@ package rest.activity.resource;
 import rest.activity.model.Person;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
+
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,11 +43,15 @@ public class PersonCollectionResource {
     @PersistenceContext(unitName = "assignment2-server-unit",type=PersistenceContextType.TRANSACTION)
     private EntityManagerFactory entityManagerFactory;
 
+    private static final Logger logger =
+            Logger.getLogger(PersonCollectionResource.class.getName());
+    
+    
     // Return the list of people to the user in the browser
     @GET
     @Produces({MediaType.TEXT_XML,  MediaType.APPLICATION_JSON ,  MediaType.APPLICATION_XML })
     public List<Person> getPersonsBrowser() {
-        System.out.println("Getting list of people...");
+        logger.info("Getting list of people...");
         List<Person> people = Person.getAll();
         return people;
     }
@@ -56,17 +62,17 @@ public class PersonCollectionResource {
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String getCount() {
-        System.out.println("Getting count...");
+    	logger.info("Getting count...");
         List<Person> people = Person.getAll();
         int count = people.size();
         return String.valueOf(count);
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Person newPerson(Person person) throws IOException {
-        System.out.println("Creating new person...");            
+    	logger.info("Creating new person...");            
         return Person.savePerson(person);
     }
 

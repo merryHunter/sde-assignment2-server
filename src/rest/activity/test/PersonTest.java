@@ -80,7 +80,7 @@ public class PersonTest {
     @BeforeClass
     public static void beforeClass() {
         System.out.println("Testing JPA on lifecoach database using 'introsde-jpa' persistence unit");
-        emf = Persistence.createEntityManagerFactory("assignment2-server");
+        emf = Persistence.createEntityManagerFactory("assignment2-server-unit");
         em = emf.createEntityManager();
     }
 

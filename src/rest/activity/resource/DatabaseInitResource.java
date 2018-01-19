@@ -100,7 +100,7 @@ public class DatabaseInitResource {
 	}
 	
 	
-	// Request#1
+	// Request #0
 		@GET
 		@Produces({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 		public List<Person> getInitialPersonsList() {

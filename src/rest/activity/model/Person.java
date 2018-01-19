@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import rest.activity.dao.ActivityDao;
+import rest.util.ActivityUtil;
 
 /**
  * The persistent class for the "Person" database table.
@@ -59,9 +60,10 @@ public class Person implements Serializable {
 
 	public Person(String firstname, String lastname, String birthdate, List<Activity> activitypreference) {
 		super();
+		
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.birthdate = birthdate;
+		this.birthdate = ActivityUtil.validateDateString(birthdate);
 		this.activitypreference = activitypreference;
 	}
 
