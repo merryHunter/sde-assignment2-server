@@ -137,6 +137,11 @@ public class Activity implements Serializable {
 	}
 
 	public String getType() {
+		if ( !Arrays.asList(Activity.ActivityTypes).contains(type)) {
+			throw new IllegalArgumentException("The activity type "
+					+ type + " is not supported!\nAvailable: "
+					+ Activity.ActivityTypes.toString());
+		}
 		return type;
 	}
 
@@ -149,7 +154,7 @@ public class Activity implements Serializable {
 	}
 
 	public void setStartdate(String startdate) {
-		this.startdate = startdate;
+		this.startdate = ActivityUtil.validateDateString(startdate);
 	}
 
 	@XmlTransient

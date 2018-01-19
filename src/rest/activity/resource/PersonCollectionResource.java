@@ -79,7 +79,8 @@ public class PersonCollectionResource {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Person newPerson(Person person) throws IOException {
-    	logger.info("Creating new person...");            
+    	logger.info("Creating new person...");   
+    	System.out.println("creating person at post request");
         return Person.savePerson(person);
     }
 

@@ -88,13 +88,14 @@ public class PersonResource {
             person.setIdPerson(this.id);
             person.setActivityPreferences(acts);
             Person.updatePerson(person);
-            res = Response.created(uriInfo.getAbsolutePath()).build();
+            res = Response.ok(uriInfo.getAbsolutePath()).build();
         }
         return res;
     }
 
     @DELETE
     public void deletePerson() {
+    	logger.info("deleting person with id " + Integer.toString(id));
         Person c = getPersonById(id);
         if (c == null)
             throw new RuntimeException("Delete: Person with " + id
@@ -103,13 +104,13 @@ public class PersonResource {
     }
 
     public Person getPersonById(int personId) {
-        System.out.println("Reading person from DB with id: "+personId);
+    	logger.info("Reading person from DB with id: "+personId);
 
         // this will work within a Java EE container, where not DAO will be needed
         //Person person = entityManager.find(Person.class, personId); 
 
         Person person = Person.getPersonById(personId);
-        System.out.println("Person: "+person.toString());
+        logger.info("Person: "+person.toString());
         return person;
     }
 }

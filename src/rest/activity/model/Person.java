@@ -58,7 +58,8 @@ public class Person implements Serializable {
 	}
 	
 
-	public Person(String firstname, String lastname, String birthdate, List<Activity> activitypreference) {
+	public Person(String firstname, String lastname, String birthdate, List<Activity> activitypreference)
+			throws IllegalArgumentException{
 		super();
 		
 		this.firstname = firstname;
@@ -73,7 +74,8 @@ public class Person implements Serializable {
 	}
 
 	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
+		this.birthdate = ActivityUtil.validateDateString(birthdate);
+//		this.birthdate = birthdate;
 	}
 
 	public int getIdPerson() {
