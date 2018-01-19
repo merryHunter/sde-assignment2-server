@@ -159,21 +159,5 @@ public class Person implements Serializable {
 	    tx.commit();
 	    ActivityDao.instance.closeConnections(em);
 	}
-
-
-	public List<Activity> getActivitiesWithTypeAndId(String type, int activityId) {
-		return null;
-	}
-
-	
-	public Activity addActivityWithType(String type, Activity activity) {
-		return null;
-		
-	}
-
-
-	public List<Activity> getActivitiesWithWithinRange(String type, Date beforeDate, Date afterDate) {
-		return null;
-	}
 }
 

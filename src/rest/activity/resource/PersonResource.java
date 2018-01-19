@@ -1,5 +1,6 @@
 package rest.activity.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,6 +11,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -55,6 +58,8 @@ public class PersonResource {
     public Response getPerson() {
         Person person = this.getPersonById(id);
         if (person == null) {
+        	logger.info("person with id " + Integer.toString(id) + " not found!");
+        	logger.info(Response.Status.NOT_FOUND.toString());
 			 return Response.status(Response.Status.NOT_FOUND).build();
 		}
         return Response.status(Response.Status.OK).entity(person).build();
@@ -109,8 +114,29 @@ public class PersonResource {
         // this will work within a Java EE container, where not DAO will be needed
         //Person person = entityManager.find(Person.class, personId); 
 
-        Person person = Person.getPersonById(personId);
-        logger.info("Person: "+person.toString());
-        return person;
+        return Person.getPersonById(personId);
     }
+    
+    
+    // Request #7
+    @GET
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Path("{activity_type}")
+    public List<Activity> getActivitiesByType(@PathParam("activity_type") String type){
+    	Person p = getPersonById(id);
+    	List<Activity> acts = new ArrayList<Activity>();
+    	for (Activity a: p.getActivityPreferences()) {
+    		if (a.getType().equals(type)){
+    			acts.add(a);
+    		}
+    	}
+		return acts;
+    }
+    
+    
+    
+    
+    
+    
+    
 }
