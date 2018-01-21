@@ -10,25 +10,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@XmlRootElement(name="activityTypeWrapperXML")
+@XmlRootElement(name="activity_type")
 public class ActivityTypeWrapperXML implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
+		
 		@JsonFormat(shape = JsonFormat.Shape.STRING)
-	    private String[] activityTypes; // = (ArrayList<String>) Arrays.asList(Activity.ActivityTypes);
+	    private String[] activity_type; // = (ArrayList<String>) Arrays.asList(Activity.ActivityTypes);
 	    
-	    public String[] getActivityTypes() {
-	    	return activityTypes;
+	    public String[] getActivityType() {
+	    	return activity_type;
 	    }
 	    
-	    public void setActivityTypes(String[] t){
-	    	this.activityTypes = t;
+	    public void setActivityType(String[] t){
+	    	this.activity_type = t;
 	    }
 	    
 	    public ActivityTypeWrapperXML(){}
 	    
 	    public ActivityTypeWrapperXML(String[] a) {
-	    	this.activityTypes = a;
+	    	this.activity_type = a;
 	    }
 }

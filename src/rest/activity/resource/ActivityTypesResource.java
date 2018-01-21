@@ -20,6 +20,7 @@ import org.h2.util.New;
 import rest.activity.model.Activity;
 import rest.activity.model.ActivityTypeWrapperXML;
 
+
 @Stateless
 @LocalBean
 @Path("/activity_types")
@@ -35,7 +36,7 @@ public class ActivityTypesResource {
 	@Produces({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public ActivityTypeWrapperXML getAllActivityTypes() {
 		ActivityTypeWrapperXML a = new ActivityTypeWrapperXML();
-		a.setActivityTypes(Activity.ActivityTypes);
+		a.setActivityType(Activity.ActivityTypes);
 		return a;
 	}
 }
