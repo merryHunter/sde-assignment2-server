@@ -4,7 +4,7 @@ import javax.ws.rs.ApplicationPath;
 
 import org.glassfish.jersey.server.ResourceConfig;
 
-@ApplicationPath("sdelab")
+@ApplicationPath("/")
 public class MyApplicationConfig extends ResourceConfig {
     public MyApplicationConfig () {
         packages("rest.activity");
